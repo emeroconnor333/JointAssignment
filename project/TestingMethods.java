@@ -57,6 +57,20 @@ public class TestingMethods {
         }
     }
 
+    public static void pciProductID() {
+        pciInfo pci = new pciInfo();
+        pci.read();
+
+        int functionCount = pci.functionCount(0, 0);
+        int productIDs[] = new int[functionCount];
+        for (int i = 0; i < functionCount; i++) {
+            productIDs[i] = pci.productID(0, 0, i);
+        }
+        for (int productID : productIDs) {
+            System.out.println(productID);
+        }
+    }
+
     public static void main(String[] args) {
         System.loadLibrary("sysinfo");
         sysInfo info = new sysInfo();
@@ -66,7 +80,8 @@ public class TestingMethods {
 //        showCPU();
 //        showPCI();
 //        showUSB();
-        pciVendorID();
+//        pciVendorID();
+        pciProductID();
     }
 }
 
