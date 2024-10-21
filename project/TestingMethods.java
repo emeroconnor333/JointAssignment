@@ -47,13 +47,21 @@ public class TestingMethods {
         pciInfo pci = new pciInfo();
         pci.read();
 
-        int functionCount = pci.functionCount(0, 0);
-        int vendorIDs[] = new int[functionCount];
-        for (int i = 0; i < functionCount; i++) {
-            vendorIDs[i] = pci.vendorID(0, 0, i);
+        int functionCount1 = pci.functionCount(0, 0);
+        int vendorIDs[] = new int[functionCount1];
+        for (int i = 0; i < functionCount1; i++) {
+            // Check if the function is present before getting the vendor ID
+            if (pci.functionPresent(0, 0, i) > 0) {
+                vendorIDs[i] = pci.vendorID(0, 0, i);
+            } else {
+                vendorIDs[i] = -1;  // Use -1 to indicate function not present
+            }
         }
+        System.out.println("The vendor IDs are:");
         for (int vendorID : vendorIDs) {
-            System.out.println(vendorID);
+            if (vendorID != -1) {  // Only print valid IDs
+                System.out.println(vendorID);
+            }
         }
     }
 
@@ -61,15 +69,24 @@ public class TestingMethods {
         pciInfo pci = new pciInfo();
         pci.read();
 
-        int functionCount = pci.functionCount(0, 0);
-        int productIDs[] = new int[functionCount];
-        for (int i = 0; i < functionCount; i++) {
-            productIDs[i] = pci.productID(0, 0, i);
+        int functionCount2 = pci.functionCount(0, 0);
+        int productIDs[] = new int[functionCount2];
+        for (int i = 0; i < functionCount2; i++) {
+            // Check if the function is present before getting the product ID
+            if (pci.functionPresent(0, 0, i) > 0) {
+                productIDs[i] = pci.productID(0, 0, i);
+            } else {
+                productIDs[i] = -1;  // Use -1 to indicate function not present
+            }
         }
+        System.out.println("The product IDs are:");
         for (int productID : productIDs) {
-            System.out.println(productID);
+            if (productID != -1) {  // Only print valid product IDs
+                System.out.println(productID);
+            }
         }
     }
+
 
     public static void main(String[] args) {
         System.loadLibrary("sysinfo");
@@ -77,10 +94,10 @@ public class TestingMethods {
         cpuInfo cpu = new cpuInfo();
         cpu.read(0);
 
-//        showCPU();
-//        showPCI();
-//        showUSB();
-//        pciVendorID();
+        showCPU();
+        showPCI();
+        showUSB();
+        pciVendorID();
         pciProductID();
     }
 }
