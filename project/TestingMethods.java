@@ -105,7 +105,26 @@ public class TestingMethods {
         }
     }
 
+    public static void displayAllPCIInfo() {
+        pciInfo pci = new pciInfo();
+        pci.read();
 
+        int busCount = pci.busCount();
+        for (int bus = 0; bus < busCount; bus++) {
+            int deviceCount = pci.deviceCount(bus);
+            for (int device = 0; device < deviceCount; device++) {
+                int functionCount = pci.functionCount(bus, device);
+                for (int function = 0; function < functionCount; function++) {
+                    if (pci.functionPresent(bus, device, function) > 0) {
+                        System.out.println("Bus " + bus + ", Device " + device + ", Function " + function);
+                        System.out.println("Vendor ID: " + pci.vendorID(bus, device, function));
+                        System.out.println("Product ID: " + pci.productID(bus, device, function));
+                        System.out.println();
+                    }
+                }
+            }
+        }
+    }
 
     public static void main(String[] args) {
         System.loadLibrary("sysinfo");
@@ -113,12 +132,14 @@ public class TestingMethods {
         cpuInfo cpu = new cpuInfo();
         cpu.read(0);
 
+
         showCPU();
         showPCI();
         showUSB();
         pciVendorID();
         pciProductID();
         showPCIInfo();
+        displayAllPCIInfo();
     }
 }
 
