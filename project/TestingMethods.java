@@ -88,27 +88,12 @@ public class TestingMethods {
         }
     }
 
-    public static void showPCIInfo() {
-        pciInfo pci = new pciInfo();
-        pci.read();
-
-        int functionCount = pci.functionCount(0, 0);
-
-        System.out.println("PCI Information for Bus 0, Device 0:");
-        for (int i = 0; i < functionCount; i++) {
-            if (pci.functionPresent(0, 0, i) > 0) {
-                System.out.println("Function " + i + ":");
-                System.out.println("Vendor ID: " + pci.vendorID(0, 0, i));
-                System.out.println("Product ID: " + pci.productID(0, 0, i));
-                System.out.println();
-            }
-        }
-    }
-
     public static void displayAllPCIInfo() {
         pciInfo pci = new pciInfo();
         pci.read();
 
+        //loops through each bus, device and function printing vendor and product IDs
+        System.out.println("-PCI Vendor and Product IDs-");
         int busCount = pci.busCount();
         for (int bus = 0; bus < busCount; bus++) {
             int deviceCount = pci.deviceCount(bus);
@@ -132,14 +117,13 @@ public class TestingMethods {
         cpuInfo cpu = new cpuInfo();
         cpu.read(0);
 
-
+        System.out.println("==== System Information ====");
         showCPU();
         showPCI();
         showUSB();
-        pciVendorID();
-        pciProductID();
-        showPCIInfo();
+        System.out.println();
         displayAllPCIInfo();
+        System.out.println("=============================");
     }
 }
 
