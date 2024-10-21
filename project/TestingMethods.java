@@ -42,15 +42,31 @@ public class TestingMethods {
         System.out.println("Product ID of bus 0, device 0: " + usb.productID(0, 0));
     }
 
+    //putting PCI vendor IDs in an array and printing it
+    public static void pciVendorID() {
+        pciInfo pci = new pciInfo();
+        pci.read();
+
+        int functionCount = pci.functionCount(0, 0);
+        int vendorIDs[] = new int[functionCount];
+        for (int i = 0; i < functionCount; i++) {
+            vendorIDs[i] = pci.vendorID(0, 0, i);
+        }
+        for (int vendorID : vendorIDs) {
+            System.out.println(vendorID);
+        }
+    }
+
     public static void main(String[] args) {
         System.loadLibrary("sysinfo");
         sysInfo info = new sysInfo();
         cpuInfo cpu = new cpuInfo();
         cpu.read(0);
 
-        showCPU();
-        showPCI();
-        showUSB();
+//        showCPU();
+//        showPCI();
+//        showUSB();
+        pciVendorID();
     }
 }
 
