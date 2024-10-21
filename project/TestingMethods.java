@@ -113,11 +113,11 @@ public class TestingMethods {
         cpuInfo cpu = new cpuInfo();
         cpu.read(0);
 
-//        showCPU();
-//        showPCI();
-//        showUSB();
-//        pciVendorID();
-//        pciProductID();
+        showCPU();
+        showPCI();
+        showUSB();
+        pciVendorID();
+        pciProductID();
         showPCIInfo();
     }
 }
