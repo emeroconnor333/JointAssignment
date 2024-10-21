@@ -92,7 +92,7 @@ public class TestingMethods {
         pciInfo pci = new pciInfo();
         pci.read();
 
-        //loops through each bus, device and function printing vendor and product IDs
+        //loops through each PCI bus, device and function printing vendor and product IDs
         System.out.println("-PCI Vendor and Product IDs-");
         int busCount = pci.busCount();
         for (int bus = 0; bus < busCount; bus++) {
@@ -111,6 +111,24 @@ public class TestingMethods {
         }
     }
 
+    public static void displayAllUSBInfo() {
+        usbInfo usb = new usbInfo();
+        usb.read();
+
+        //loops through each USB bus, device and function printing vendor and product IDs
+        System.out.println("-USB Vendor and Product IDs-");
+        int busCount = usb.busCount();
+        for (int bus = 0; bus < busCount; bus++) {
+            int deviceCount = usb.deviceCount(bus);
+            for (int device = 0; device < deviceCount; device++) {
+                System.out.println("Bus " + bus + ", Device " + device);
+                System.out.println("Vendor ID: " + usb.vendorID(bus, device));
+                System.out.println("Product ID: " + usb.productID(bus, device));
+                System.out.println();
+            }
+        }
+    }
+
     public static void main(String[] args) {
         System.loadLibrary("sysinfo");
         sysInfo info = new sysInfo();
@@ -123,7 +141,7 @@ public class TestingMethods {
         showUSB();
         System.out.println();
         displayAllPCIInfo();
+        displayAllUSBInfo();
         System.out.println("=============================");
     }
 }
-
