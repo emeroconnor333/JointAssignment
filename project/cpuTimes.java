@@ -17,6 +17,7 @@ public class cpuTimes extends JPanel {
         super.paintComponent(g);
         try {
             drawPieChart(g);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -48,7 +49,6 @@ public class cpuTimes extends JPanel {
         double userPercent = (double) valuesArray[0] / totalCpuTime * 100;
         double nicePercent = (double) valuesArray[1] / totalCpuTime * 100;
         double systemPercent = (double) valuesArray[2] / totalCpuTime * 100;
-//        double idlePercent = (double) valuesArray[3] / totalCpuTime * 100;
         double iowaitPercent = (double) valuesArray[4] / totalCpuTime * 100;
         double irqPercent = (double) valuesArray[5] / totalCpuTime * 100;
         double softirqPercent = (double) valuesArray[6] / totalCpuTime * 100;
@@ -61,11 +61,6 @@ public class cpuTimes extends JPanel {
 
         String[] valuesNames = {"user", "nice", "system", "IO wait",
                 "IRQ", "soft IRQ", "steal", "guest", "guest nice"};
-
-        System.out.println("Time spent in:");
-        for (int i = 0; i < 9; i++) {
-            System.out.printf("%s mode: %.2f%%%n", valuesNames[i], values[i]);
-        }
 
         Graphics2D g2d = (Graphics2D) g;
 
@@ -92,33 +87,59 @@ public class cpuTimes extends JPanel {
             // Moves the start angle forward by the current slice's angle
             startAngle += arcAngle;
         }
+
+        //prints CPU times underneath
+        g.setFont(new Font("SansSerif", Font.BOLD, 18));
+        g.setColor(Color.BLACK);
+        g.drawString("CPU time spent in:", 50, 375);
+        for (int i = 0; i < 9; i++) {
+            g.drawString(valuesNames[i] + " mode:  " + String.format("%.2f", values[i]) + "%", 50, 405 + i * 20);
+        }
+
+        //finds most used mode
+        String modeMostUsed = "";
+        double maxTime = (double) 0;
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] > maxTime) {
+                maxTime = values[i];
+                modeMostUsed = valuesNames[i];
+            }
+        }
+
+        //chooses message based on mode most used
+        String[] modeMostUsedMessage = new String[3];
+        if (modeMostUsed == "system") {
+            modeMostUsedMessage[0] = "-managing memory";
+            modeMostUsedMessage[1] = "-handling file access";
+            modeMostUsedMessage[2] = "-scheduling tasks";
+        }
+        else if (modeMostUsed == "user") {
+            modeMostUsedMessage[0] = "-processing user commands";
+            modeMostUsedMessage[1] = "-running apps & software";
+            modeMostUsedMessage[2] = "-requesting system services";
+        }
+        else if (modeMostUsed == "soft IRQ") {
+            modeMostUsedMessage[0] = "-networking";
+            modeMostUsedMessage[1] = "-disk I/O operations";
+            modeMostUsedMessage[2] = "-task scheduling";
+        }
+
+        //prints most used mode and what that means
+        if (modeMostUsed.equals("system") || modeMostUsed.equals("user") || modeMostUsed.equals("soft IRQ")) {
+            g.drawString("The mode most used is " + modeMostUsed, 300, 375);
+            g.drawString("which includes tasks like:", 300, 395);
+            g.drawString(modeMostUsedMessage[0], 300, 425);
+            g.drawString(modeMostUsedMessage[1], 300, 445);
+            g.drawString(modeMostUsedMessage[2], 300, 465);
+        }
     }
 
 
     public static void main(String[] args) throws IOException {
-//        String filePath = "/proc/stat";
-//        BufferedReader br = new BufferedReader(new FileReader(filePath));
-//
-//        String line = br.readLine();
-//        String valuesString = "";
-//        if (line.contains("cpu")) {
-//            valuesString = line.substring(5);
-//        }
-//
-//        String[] valuesStringArray = valuesString.split(" ");
-//        int[] values = new int[valuesStringArray.length];
-//        for (int i = 0; i < valuesStringArray.length; i++) {
-//            values[i] = Integer.parseInt(valuesStringArray[i]);
-//        }
-//
-//        for (int value: values) {
-//            System.out.println(value);
-//        }
-
         // Creates our JFrame window
         JFrame frame = new JFrame("CPU Times");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //so you can x out of it
-        frame.setSize(400, 400);
+        frame.setSize(600, 600);
 
         frame.add(new cpuTimes()); //adding in our pie chart
 
