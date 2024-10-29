@@ -4,53 +4,50 @@ import java.awt.*;
 public class Memory extends JFrame {
     private JProgressBar memoryProgressBar;
 
-    // Constructor to initialize memory values and setup GUI
+    // setup GUI
     public Memory(int totalMemory, int usedMemory) {
-        memInfo mem = new memInfo();
-        mem.read();
 
-        // Calculate the percentage of memory used
+        // percentage of memory used
         int memoryUsagePercentage = (int) ((double) usedMemory / totalMemory * 100);
 
-        // Initialize the progress bar
-        memoryProgressBar = new JProgressBar(0, 100);  // Progress bar from 0% to 100%
-        memoryProgressBar.setValue(memoryUsagePercentage);  // Set current memory usage
-        memoryProgressBar.setStringPainted(true);  // Display the percentage on the bar
-        memoryProgressBar.setForeground(Color.BLUE);  // Color of the used memory portion
-        memoryProgressBar.setBackground(Color.LIGHT_GRAY);  // Color of the free memory portion
+        //progress bar
+        memoryProgressBar = new JProgressBar(0, 100);
+        memoryProgressBar.setValue(memoryUsagePercentage); 
+        memoryProgressBar.setStringPainted(true);  
+        memoryProgressBar.setForeground(Color.BLUE); 
+        memoryProgressBar.setBackground(Color.LIGHT_GRAY);  
 
-        // Set a custom string to show the actual memory usage in MB
+        // print memory usage
         memoryProgressBar.setString((usedMemory / 1024) + "GB / " + (totalMemory / 1024) + "GB");
 
-        // Set a larger font for the text on the progress bar
-        Font font = new Font("SansSerif", Font.BOLD, 18);  // Customize the font size as needed
+        // font
+        Font font = new Font("SansSerif", Font.BOLD, 18); 
         memoryProgressBar.setFont(font);
 
-        // Setup the main frame layout
+        // layout
         setLayout(new BorderLayout());
         add(memoryProgressBar, BorderLayout.CENTER);
 
-        // Frame settings
+        // frame
         setTitle("Memory Usage");
         setSize(400, 100);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);  // Center the window
+        setLocationRelativeTo(null);  // centers the window
     }
 
-    // Main method to run the GUI
+    // runs the GUI
     public static void main(String[] args) {
         System.loadLibrary("sysinfo");
         sysInfo info = new sysInfo();
         memInfo mem = new memInfo();
         mem.read();
 
-        // Assuming `mem` is an instance of your Memory class with getUsed() and getTotal() methods
-        int usedMemory = mem.getUsed();  // Get used memory
-        int totalMemory = mem.getTotal();  // Get total memory
+        int usedMemory = mem.getUsed();  // used memory
+        int totalMemory = mem.getTotal();  // total memory
 
         SwingUtilities.invokeLater(() -> {
-            Memory memoryDisplay = new Memory(totalMemory, usedMemory);
-            memoryDisplay.setVisible(true);
+            Memory Memory = new Memory(totalMemory, usedMemory);
+            Memory.setVisible(true);
         });
     }
 }
