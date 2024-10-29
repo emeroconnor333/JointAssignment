@@ -25,7 +25,7 @@ public class emer_david_julia_sebastians_taskmanager {
         button3.setPreferredSize(new Dimension(300, 200));
 
         JButton button4 = new JButton("Disk Information");
-        button3.setPreferredSize(new Dimension(300, 200));
+        button4.setPreferredSize(new Dimension(300, 200));
 
         // Add the buttons to the main window
         frame.add(button1);
@@ -34,10 +34,10 @@ public class emer_david_julia_sebastians_taskmanager {
         frame.add(button4);
 
         // Add action listeners to buttons to show new windows with placeholder information
-        button1.addActionListener(e -> showCPUInfoScreen());  // Open new screen for CPU info
-        button2.addActionListener(e -> showPCI());  // Open new screen for PCI info
-        button3.addActionListener(e -> showUSBInfoScreen());  // Open new screen for USB info
-        button4.addActionListener(e -> showDISCInfoScreen());  // Open new screen for USB info
+        button1.addActionListener(e -> template.showCPU());       // Open new screen for CPU info
+        button2.addActionListener(e -> template.showPCI());                 // Open new screen for PCI info
+        button3.addActionListener(e -> template.showUSB());                 // Open new screen for USB info
+        button4.addActionListener(e -> template.showDISC());      // Open new screen for Disk info
 
         // Set the window size for the main frame
         frame.setSize(1500, 300);
@@ -69,16 +69,19 @@ public class emer_david_julia_sebastians_taskmanager {
         cpuInfoFrame.setSize(700, 500);
         cpuInfoFrame.setLayout(new FlowLayout());
 
-        JLabel usbInfoLabel = new JLabel("Displaying CPU Information...");
-        cpuInfoFrame.add(usbInfoLabel);
+        JLabel cpuInfoLabel = new JLabel("Displaying CPU Information...");
+        cpuInfoFrame.add(cpuInfoLabel);
 
         // Set the CPU info window to be visible
         cpuInfoFrame.setVisible(true);
     }
 
     // Method to show PCI info in a new window
-    public static void showPCI() {
+    public static void displayAllPCIInfo() {
+        pciInfo pci = new pciInfo();
+        pci.read();
 
+        int busCount = pci.busCount();
 
         JFrame pciInfoFrame = new JFrame("PCI Information");
 
@@ -86,21 +89,39 @@ public class emer_david_julia_sebastians_taskmanager {
         pciInfoFrame.setSize(700, 500);
         pciInfoFrame.setLayout(new FlowLayout());
 
+        JLabel pcibusInfoLabel = new JLabel("Your computer has " + pci.busCount() + " PCI buses");
+        JLabel pcibusInfoDescriptionLabel = new JLabel("The average computer can have up to 256 PCI buses");
 
-        pciInfo pci = new pciInfo();
-       
+        pciInfoFrame.add(pcibusInfoLabel);
+        pciInfoFrame.add(pcibusInfoDescriptionLabel);
 
-        JLabel pciInfoLabel = new JLabel("Your computer has " + pci.busCount() + " PCI buses "); //
-        JLabel pciInfoDescriptionLabel = new JLabel("The average computer can have up to 256 PCI buses");
+        // Loop through PCI devices and functions
+        for (int i = 0; i < pci.busCount(); i++) {
+            for (int j = 0; j < pci.deviceCount(i); j++) {
+                if (pci.functionCount(i, j) > 0) {
+                    JLabel pcifunctionInfoLabel = new JLabel("Bus " + i + " Device " + j + " has " + pci.functionCount(i, j) + " functions");
+                    JLabel pcifunctionInfoDescriptionLabel = new JLabel("The average bus can have up to 8 functions");
+                    pciInfoFrame.add(pcifunctionInfoLabel);
+                    pciInfoFrame.add(pcifunctionInfoDescriptionLabel);
 
-        // Add the labels to the frame
-        pciInfoFrame.add(pciInfoLabel);
-        pciInfoFrame.add(pciInfoDescriptionLabel);
+                    for (int k = 0; k < pci.functionCount(i, j); k++) {
+                        if (pci.functionPresent(i, j, k) > 0) {
+                            JLabel pcivendorInfoDescriptionLabel = new JLabel("Bus " + i + " device " + j + " function " + k +
+                                    " has vendor " + String.format("0x%04X", pci.vendorID(i, j, k)) +
+                                    " and product " + String.format("0x%04X", pci.productID(i, j, k)));
+                            pciInfoFrame.add(pcivendorInfoDescriptionLabel);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Set the PCI info window to be visible
         pciInfoFrame.setVisible(true);
     }
 
     // Method to show USB info in a new window
-    public static void showUSBInfoScreen() {
+    public static void showUSB() {
         // Create a new JFrame for the USB Information
         JFrame usbInfoFrame = new JFrame("USB Information");
 
