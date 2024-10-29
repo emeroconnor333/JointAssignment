@@ -8,18 +8,14 @@ import java.util.List;
 public class emer_david_julia_sebastians_taskmanager {
 
     public static void main(String[] args) {
-        // Create a new JFrame (main window)
+        // Create the main window
         JFrame frame = new JFrame("Emer, David, Julia & Sebastian's Task Manager");
-
-        // Set the default close operation to exit the application
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Set layout manager to FlowLayout
         frame.setLayout(new FlowLayout());
 
-        // Create the buttons
+        // Create buttons for different system information
         JButton button1 = new JButton("CPU Information");
-        button1.setPreferredSize(new Dimension(300, 200));  // button size
+        button1.setPreferredSize(new Dimension(300, 200));
 
         JButton button2 = new JButton("PCI Information");
         button2.setPreferredSize(new Dimension(300, 200));
@@ -30,96 +26,35 @@ public class emer_david_julia_sebastians_taskmanager {
         JButton button4 = new JButton("Disk Information");
         button4.setPreferredSize(new Dimension(300, 200));
 
-        // Add the buttons to the main window
+        // Add the buttons to the main frame
         frame.add(button1);
         frame.add(button2);
         frame.add(button3);
         frame.add(button4);
 
-        // Add action listeners to buttons to show new windows with placeholder information
-        button1.addActionListener(e -> showCPUInfoScreen());  // Open new screen for CPU info
-        button2.addActionListener(e -> showPCIInfoScreen());  // Open new screen for PCI info
-        button3.addActionListener(e -> showUSBInfoScreen());  // Open new screen for USB info
-        button4.addActionListener(e -> showDISCInfoScreen());  // Open new screen for Disk info
+        // Attach action listeners to each button
+        button1.addActionListener(e -> showCPUInfoScreen());
+        button2.addActionListener(e -> showPCIInfoScreen());
+        button3.addActionListener(e -> showUSBInfoScreen());
+        button4.addActionListener(e -> showDISCInfoScreen());
 
-        // Set the window size for the main frame
+        // Configure and display the main frame
         frame.setSize(1500, 300);
-
-        // Make the main window visible
         frame.setVisible(true);
     }
 
-    public static void showDISCInfoScreen() {
-        JFrame discInfoFrame = new JFrame("Disk Information");
-
-        // Set size and layout
-        discInfoFrame.setSize(700, 500);
-        discInfoFrame.setLayout(new FlowLayout());
-
-        JLabel discInfoLabel = new JLabel("Displaying Disk Information...");
-        discInfoFrame.add(discInfoLabel);
-
-        // Set the DISC info window to be visible
-        discInfoFrame.setVisible(true);
-    }
-
-    // Method to show CPU info in a new window
     public static void showCPUInfoScreen() {
-        // Create a new JFrame for the CPU Information
         JFrame cpuInfoFrame = new JFrame("CPU Information");
-
-        // Set size and layout
         cpuInfoFrame.setSize(700, 500);
         cpuInfoFrame.setLayout(new FlowLayout());
-
         JLabel cpuInfoLabel = new JLabel("Displaying CPU Information...");
         cpuInfoFrame.add(cpuInfoLabel);
-
-        // Set the CPU info window to be visible
         cpuInfoFrame.setVisible(true);
     }
 
-    // Method to show PCI info in a new window
     public static void showPCIInfoScreen() {
+        // Create a new frame for PCI Information
         JFrame pciInfoFrame = new JFrame("PCI Information");
-
-        // Set size and layout
-        pciInfoFrame.setSize(700, 500);
-        pciInfoFrame.setLayout(new FlowLayout());
-
-        pciInfo pci = new pciInfo();
-        pci.read();
-
-        // Display each PCI device entry in the frame
-        for (String device : pci.getDevices()) {
-            JLabel deviceLabel = new JLabel(device);
-            pciInfoFrame.add(deviceLabel);
-        }
-
-        // Set the PCI info window to be visible
-        pciInfoFrame.setVisible(true);
-    }
-
-    // Method to show USB info in a new window (now outside showPCIInfoScreen)
-    public static void showUSBInfoScreen() {
-        JFrame usbInfoFrame = new JFrame("USB Information");
-
-        // Set size and layout
-        usbInfoFrame.setSize(700, 500);
-        usbInfoFrame.setLayout(new FlowLayout());
-
-        JLabel usbInfoLabel = new JLabel("Displaying USB Information...");
-        usbInfoFrame.add(usbInfoLabel);
-
-        // Set the USB info window to be visible
-        usbInfoFrame.setVisible(true);
-    }
-
-     {
-        // Create a new JFrame for the PCI Information
-        JFrame pciInfoFrame = new JFrame("PCI Information");
-
-        // Set size and layout
         pciInfoFrame.setSize(800, 600);
         pciInfoFrame.setLayout(new BorderLayout());
 
@@ -129,29 +64,43 @@ public class emer_david_julia_sebastians_taskmanager {
         // Create a text area to display formatted PCI information
         JTextArea pciTextArea = new JTextArea();
         pciTextArea.setEditable(false);
-        pciTextArea.setFont(new Font("Monospaced", Font.PLAIN, 12)); // Use a monospaced font for better alignment
+        pciTextArea.setFont(new Font("Monospaced", Font.PLAIN, 12)); // Monospaced font for alignment
 
-        // Add a scroll pane for easier viewing of long output
+        // Add a scroll pane for the text area
         JScrollPane scrollPane = new JScrollPane(pciTextArea);
         pciInfoFrame.add(scrollPane, BorderLayout.CENTER);
 
-        // Populate the text area with formatted PCI information
-        StringBuilder displayText = new StringBuilder();
-        displayText.append("Detected PCI Devices:\n\n");
-
+        // Populate the text area with PCI information
+        StringBuilder displayText = new StringBuilder("Detected PCI Devices:\n\n");
         for (String deviceInfo : pci.getDevices()) {
             displayText.append(deviceInfo).append("\n\n");
         }
-
         pciTextArea.setText(displayText.toString());
 
-        // Set the PCI info window to be visible
+        // Make the PCI info window visible
         pciInfoFrame.setVisible(true);
+    }
+
+    public static void showUSBInfoScreen() {
+        JFrame usbInfoFrame = new JFrame("USB Information");
+        usbInfoFrame.setSize(700, 500);
+        usbInfoFrame.setLayout(new FlowLayout());
+        JLabel usbInfoLabel = new JLabel("Displaying USB Information...");
+        usbInfoFrame.add(usbInfoLabel);
+        usbInfoFrame.setVisible(true);
+    }
+
+    public static void showDISCInfoScreen() {
+        JFrame discInfoFrame = new JFrame("Disk Information");
+        discInfoFrame.setSize(700, 500);
+        discInfoFrame.setLayout(new FlowLayout());
+        JLabel discInfoLabel = new JLabel("Displaying Disk Information...");
+        discInfoFrame.add(discInfoLabel);
+        discInfoFrame.setVisible(true);
     }
 
     // Inner class to handle PCI information retrieval using `lspci`
     static class pciInfo {
-
         private List<String> pciDevices;
 
         public pciInfo() {
@@ -187,13 +136,11 @@ public class emer_david_julia_sebastians_taskmanager {
             String[] parts = line.split(" ");
             String busDevice = parts[0];
 
-            // Extract vendor and product ID (in square brackets, e.g., "[8086:2929]")
+            // Extract vendor and product ID
             String vendorProductID = line.substring(line.indexOf("[") + 1, line.indexOf("]"));
-
-            // Get the device description (everything after the bus device and ID)
             String description = line.substring(line.indexOf("]") + 1).trim();
 
-            // Break down information into a more readable format
+            // Format the information for better readability
             return String.format(
                     "Bus/Device: %s\nVendor/Product ID: %s\nDescription: %s",
                     busDevice,
