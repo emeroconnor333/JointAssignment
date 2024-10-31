@@ -13,18 +13,39 @@ public class emer_david_julia_sebastians_taskmanager {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
 
-        // Create buttons for different system information
+        // Load the background image
+        ImageIcon backgroundImage = new ImageIcon("\"C:\\Users\\5090d\\OneDrive\\Desktop\\digital-technology-binary-code-blue-background-matrix-cyber-technology-security-abstract-circuit-tech-secure-internet-network-connection-binary-zero-one-number-ai-big-data-illustration-vector.jpg\"");
+
+        // Create a custom JPanel with the image as background
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+
+        backgroundPanel.setLayout(new FlowLayout());
+        // Create buttons for different system information with custom colors
         JButton button1 = new JButton("CPU Information");
         button1.setPreferredSize(new Dimension(300, 200));
+        button1.setBackground(new Color(100, 149, 237));  // Cornflower blue background
+        button1.setForeground(Color.WHITE);               // White text
 
         JButton button2 = new JButton("PCI Information");
         button2.setPreferredSize(new Dimension(300, 200));
+        button2.setBackground(new Color(255, 165, 0));   // Medium turquoise background
+        button2.setForeground(Color.WHITE);               // White text
 
         JButton button3 = new JButton("USB Information");
         button3.setPreferredSize(new Dimension(300, 200));
+        button3.setBackground(new Color(255, 182, 193));  // Light pink background
+        button3.setForeground(Color.DARK_GRAY);           // Dark gray text
 
         JButton button4 = new JButton("Disk Information");
         button4.setPreferredSize(new Dimension(300, 200));
+        button4.setBackground(new Color(60, 179, 113));   // Medium sea green background
+        button4.setForeground(Color.WHITE);               // White text
 
         // Add the buttons to the main frame
         frame.add(button1);
@@ -47,16 +68,17 @@ public class emer_david_julia_sebastians_taskmanager {
         JFrame cpuInfoFrame = new JFrame("CPU Information");
         cpuInfoFrame.setSize(700, 500);
         cpuInfoFrame.setLayout(new FlowLayout());
+        cpuInfoFrame.getContentPane().setBackground(Color.LIGHT_GRAY);  // Set background color
         JLabel cpuInfoLabel = new JLabel("Displaying CPU Information...");
         cpuInfoFrame.add(cpuInfoLabel);
         cpuInfoFrame.setVisible(true);
     }
 
     public static void showPCIInfoScreen() {
-        // Create a new frame for PCI Information
         JFrame pciInfoFrame = new JFrame("PCI Information");
         pciInfoFrame.setSize(800, 600);
         pciInfoFrame.setLayout(new BorderLayout());
+        pciInfoFrame.getContentPane().setBackground(Color.LIGHT_GRAY);  // Set background color
 
         pciInfo pci = new pciInfo();
         pci.read();
@@ -64,7 +86,8 @@ public class emer_david_julia_sebastians_taskmanager {
         // Create a text area to display formatted PCI information
         JTextArea pciTextArea = new JTextArea();
         pciTextArea.setEditable(false);
-        pciTextArea.setFont(new Font("Monospaced", Font.PLAIN, 12)); // Monospaced font for alignment
+        pciTextArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        pciTextArea.setBackground(new Color(245, 245, 245));  // Very light gray background
 
         // Add a scroll pane for the text area
         JScrollPane scrollPane = new JScrollPane(pciTextArea);
@@ -85,6 +108,7 @@ public class emer_david_julia_sebastians_taskmanager {
         JFrame usbInfoFrame = new JFrame("USB Information");
         usbInfoFrame.setSize(700, 500);
         usbInfoFrame.setLayout(new FlowLayout());
+        usbInfoFrame.getContentPane().setBackground(Color.LIGHT_GRAY);  // Set background color
         JLabel usbInfoLabel = new JLabel("Displaying USB Information...");
         usbInfoFrame.add(usbInfoLabel);
         usbInfoFrame.setVisible(true);
@@ -94,6 +118,7 @@ public class emer_david_julia_sebastians_taskmanager {
         JFrame discInfoFrame = new JFrame("Disk Information");
         discInfoFrame.setSize(700, 500);
         discInfoFrame.setLayout(new FlowLayout());
+        discInfoFrame.getContentPane().setBackground(Color.LIGHT_GRAY);  // Set background color
         JLabel discInfoLabel = new JLabel("Displaying Disk Information...");
         discInfoFrame.add(discInfoLabel);
         discInfoFrame.setVisible(true);
@@ -132,11 +157,8 @@ public class emer_david_julia_sebastians_taskmanager {
 
         // Parses a single line of `lspci` output to extract readable PCI information
         private String parseDeviceInfo(String line) {
-            // Example line: "00:1f.2 SATA controller [8086:2929] Intel Corporation 82801IR/IO Controller Hub (ICH9R)"
             String[] parts = line.split(" ");
             String busDevice = parts[0];
-
-            // Extract vendor and product ID
             String vendorProductID = line.substring(line.indexOf("[") + 1, line.indexOf("]"));
             String description = line.substring(line.indexOf("]") + 1).trim();
 

@@ -69,8 +69,8 @@ public class cpuTimes extends JPanel {
         int height = getHeight();
 
         // Coordinates and size for the pie chart
-        int centerX = width / 4;
-        int centerY = height / 4;
+        int centerX = width / 16;
+        int centerY = height / 16;
         int pieWidth = 200;
         int pieHeight = 200;
 
@@ -91,9 +91,9 @@ public class cpuTimes extends JPanel {
         //prints CPU times underneath
         g.setFont(new Font("SansSerif", Font.BOLD, 18));
         g.setColor(Color.BLACK);
-        g.drawString("CPU time spent in:", 50, 375);
+        g.drawString("CPU time spent in:", 50, 255);
         for (int i = 0; i < 9; i++) {
-            g.drawString(valuesNames[i] + " mode:  " + String.format("%.2f", values[i]) + "%", 50, 405 + i * 20);
+            g.drawString(valuesNames[i] + " mode:  " + String.format("%.2f", values[i]) + "%", 50, 280 + i * 20);
         }
 
         //finds most used mode
@@ -126,11 +126,11 @@ public class cpuTimes extends JPanel {
 
         //prints most used mode and what that means
         if (modeMostUsed.equals("system") || modeMostUsed.equals("user") || modeMostUsed.equals("soft IRQ")) {
-            g.drawString("The mode most used is " + modeMostUsed, 300, 375);
-            g.drawString("which includes tasks like:", 300, 395);
-            g.drawString(modeMostUsedMessage[0], 300, 425);
-            g.drawString(modeMostUsedMessage[1], 300, 445);
-            g.drawString(modeMostUsedMessage[2], 300, 465);
+            g.drawString("The mode most used is " + modeMostUsed, 300, 255);
+            g.drawString("which includes tasks like:", 300, 275);
+            g.drawString(modeMostUsedMessage[0], 300, 305);
+            g.drawString(modeMostUsedMessage[1], 300, 325);
+            g.drawString(modeMostUsedMessage[2], 300, 345);
         }
     }
 
