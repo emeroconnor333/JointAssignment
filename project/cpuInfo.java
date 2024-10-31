@@ -7,6 +7,7 @@
 public class cpuInfo 
 {
     // Refresh the current values and counters - call this before other methods
+    //Hello github can you see me
     public native void read (int seconds);
     public native void read ();
 
